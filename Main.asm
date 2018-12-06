@@ -1,5 +1,5 @@
 ; Main.asm
-; Name:Tyler Kapadia & Ari Takvorian EE306 GIT GIT GIT
+; Name:Tyler Kapadia & Ari Takvorian EE306
 ; UTEid: tak2242 & abt734
 ; Continuously reads from x4600 making sure its not reading duplicate
 ; symbols. Processes the symbol based on the program description
