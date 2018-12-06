@@ -1,6 +1,6 @@
 ; Main.asm
-; Name:
-; UTEid: 
+; Name:Tyler Kapadia & Ari Takvorian EE306
+; UTEid: tak2242 & abt734
 ; Continuously reads from x4600 making sure its not reading duplicate
 ; symbols. Processes the symbol based on the program description
 ; of mRNA processing.
@@ -80,11 +80,85 @@ TRAP x21
 
 
 
+USTATE		;output any, looks for U
+LDI R0, STACK
+BRz USTATE	;loop until new input is detected
+TRAP x21
 
+AND R2, R2, 0	;clears x4600
+STI R2, STACK
 
+LD R1, U
+ADD R1, R0, R1
 
+BRz UASTATE
+BRnp USTATE
 
-STOP
+UASTATE ; output any, looks for A or G
+LDI R0, STACK
+BRz UASTATE	;loop until new input is detected
+TRAP x21
+
+AND R2, R2, 0	;clears x4600
+STI R2, STACK
+
+LD R1, A
+ADD R1, R0, R1
+BRz Final
+
+LD R1, G
+ADD R1, R0, R1
+BRz Final2
+
+LD R1, U
+ADD R1, R0, R1
+BRz UASTATE
+
+BRnp USTATE
+
+Final
+LDI R0, STACK
+BRz Final	;loop until new input is detected
+TRAP x21
+
+AND R2, R2, 0	;clears x4600
+STI R2, STACK
+
+LD R1, A
+ADD R1, R0, R1
+BRz DONE
+
+LD R1, G
+ADD R1, R0, R1
+BRz DONE
+
+LD R1, U
+ADD R1, R0, R1
+BRz UASTATE
+BRnp USTATE
+
+Final2
+LDI R0, STACK
+BRz Final2	;loop until new input is detected
+TRAP x21
+
+AND R2, R2, 0	;clears x4600
+STI R2, STACK
+
+LD R1, A
+ADD R1, R0, R1
+BRz DONE
+
+LD R1, U
+ADD R1, R0, R1
+BRz UASTATE
+
+LD R1, G
+ADD R1, R0, R1
+BRz USTATE
+BRnp USTATE
+
+DONE
 TRAP x25
 
 A .FILL #-65
